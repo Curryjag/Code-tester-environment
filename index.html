@@ -24,6 +24,7 @@
       width: 320px;
       text-align: center;
       border: 1px solid #30363d;
+      position: relative;
     }
 
     .balance {
@@ -51,6 +52,18 @@
       animation: fadeInOut 3s forwards;
     }
 
+    .refill-button {
+      margin-top: 1.5rem;
+      padding: 0.5rem 1rem;
+      background: #238636;
+      border: none;
+      color: white;
+      font-size: 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      display: none;
+    }
+
     @keyframes fadeInOut {
       0% { opacity: 0; }
       20% { opacity: 1; }
@@ -63,46 +76,51 @@
 
   <div class="wallet-box">
     <h2>Wallet Balance</h2>
-    <div class="balance"><span id="balance">500,000,000</span> $TRUMP</div>
+    <div class="balance"><span id="balance">5,000,000</span> $TRUMP</div>
     <div class="connected" id="walletConnected">✅ Wallet Connected</div>
     <div id="deductionNotice"></div>
+    <button class="refill-button" id="refillButton" onclick="refillBalance()">Refill Wallet</button>
   </div>
 
   <script>
     const balanceEl = document.getElementById("balance");
     const connectedEl = document.getElementById("walletConnected");
     const deductionNotice = document.getElementById("deductionNotice");
+    const refillBtn = document.getElementById("refillButton");
 
-    let currentBalance = 500000000;
+    let currentBalance = 5000000;
 
     function formatNumber(num) {
       return num.toLocaleString("en-US");
     }
 
     function deduct() {
-      connectedEl.style.display = "block";
-      deductionNotice.innerHTML = `<div class="deducted">−500 $TRUMP credited</div>`;
-
-      currentBalance -= 500;
-      balanceEl.textContent = formatNumber(currentBalance);
-
-      setTimeout(() => {
-        resetBalance();
-      }, 5000); // reset in 5 seconds
+      if (currentBalance >= 500) {
+        connectedEl.style.display = "block";
+        deductionNotice.innerHTML = `<div class="deducted">−500 $TRUMP credited</div>`;
+        currentBalance -= 500;
+        balanceEl.textContent = formatNumber(currentBalance);
+      } else {
+        connectedEl.style.display = "none";
+        deductionNotice.innerHTML = `<div class="deducted">💡 Balance empty. Please refill.</div>`;
+        refillBtn.style.display = "inline-block";
+        clearInterval(deductInterval);
+      }
     }
 
-    function resetBalance() {
-      currentBalance = 500000000;
+    function refillBalance() {
+      currentBalance = 5000000;
       balanceEl.textContent = formatNumber(currentBalance);
-      connectedEl.style.display = "none";
       deductionNotice.innerHTML = "";
+      connectedEl.style.display = "none";
+      refillBtn.style.display = "none";
+      deductInterval = setInterval(deduct, 4000);
     }
 
-    // Auto trigger deduction every 10s
-    setInterval(deduct, 10000);
+    let deductInterval = setInterval(deduct, 4000);
 
-    // Initial trigger
-    setTimeout(deduct, 2000);
+    // Initial delay to simulate connection
+    setTimeout(() => deduct(), 3000);
   </script>
 
 </body>
