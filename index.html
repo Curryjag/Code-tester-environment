@@ -2,71 +2,108 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard Balance</title>
+  <title>$TRUMP Wallet Dashboard</title>
   <style>
     body {
-      margin: 0;
-      background: #0a0a0a;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      color: #fff;
+      background: #0d1117;
+      color: #c9d1d9;
+      font-family: 'Segoe UI', sans-serif;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
+      justify-content: center;
       height: 100vh;
+      margin: 0;
     }
 
-    .balance-card {
-      background: linear-gradient(145deg, #1c1c1c, #2a2a2a);
-      border-radius: 16px;
-      box-shadow: 0 0 20px rgba(0, 255, 128, 0.2);
-      padding: 30px 40px;
+    .wallet-box {
+      background: #161b22;
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+      width: 320px;
       text-align: center;
-      max-width: 340px;
-      border: 1px solid #2dff8b44;
+      border: 1px solid #30363d;
     }
 
-    .balance-card img {
-      height: 50px;
-      vertical-align: middle;
-      margin-bottom: 10px;
-    }
-
-    .balance-amount {
-      font-size: 2.7rem;
+    .balance {
+      font-size: 1.6rem;
       font-weight: bold;
-      color: #00ff99;
-      margin: 10px 0;
+      margin: 1rem 0;
     }
 
-    .balance-label {
-      font-size: 0.95rem;
-      color: #80ffcc;
+    .trump {
+      font-size: 2.5rem;
+      color: #f7c52f;
+    }
+
+    .connected {
+      font-size: 1rem;
+      color: #26a641;
+      margin-top: 0.5rem;
+      display: none;
+    }
+
+    .deducted {
+      color: #f85149;
+      font-size: 1.2rem;
+      margin-top: 1rem;
+      animation: fadeInOut 3s forwards;
+    }
+
+    @keyframes fadeInOut {
+      0% { opacity: 0; }
+      20% { opacity: 1; }
+      80% { opacity: 1; }
+      100% { opacity: 0; }
     }
   </style>
 </head>
 <body>
-  <div class="balance-card">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Trump_2020_logo.svg/512px-Trump_2020_logo.svg.png" alt="$TRUMP logo">
-    <div id="balance-number" class="balance-amount">0</div>
-    <div class="balance-label">Verified $TRUMP Balance</div>
+
+  <div class="wallet-box">
+    <h2>Wallet Balance</h2>
+    <div class="balance"><span id="balance">500,000,000</span> $TRUMP</div>
+    <div class="connected" id="walletConnected">✅ Wallet Connected</div>
+    <div id="deductionNotice"></div>
   </div>
 
   <script>
-    let count = 0;
-    const target = 500000000;
-    const duration = 3000;
-    const increment = target / (duration / 30);
+    const balanceEl = document.getElementById("balance");
+    const connectedEl = document.getElementById("walletConnected");
+    const deductionNotice = document.getElementById("deductionNotice");
 
-    const counterEl = document.getElementById('balance-number');
-    const interval = setInterval(() => {
-      count += increment;
-      if (count >= target) {
-        count = target;
-        clearInterval(interval);
-      }
-      counterEl.textContent = count.toLocaleString('en-US');
-    }, 30);
+    let currentBalance = 500000000;
+
+    function formatNumber(num) {
+      return num.toLocaleString("en-US");
+    }
+
+    function deduct() {
+      connectedEl.style.display = "block";
+      deductionNotice.innerHTML = `<div class="deducted">−500 $TRUMP credited</div>`;
+
+      currentBalance -= 500;
+      balanceEl.textContent = formatNumber(currentBalance);
+
+      setTimeout(() => {
+        resetBalance();
+      }, 5000); // reset in 5 seconds
+    }
+
+    function resetBalance() {
+      currentBalance = 500000000;
+      balanceEl.textContent = formatNumber(currentBalance);
+      connectedEl.style.display = "none";
+      deductionNotice.innerHTML = "";
+    }
+
+    // Auto trigger deduction every 10s
+    setInterval(deduct, 10000);
+
+    // Initial trigger
+    setTimeout(deduct, 2000);
   </script>
+
 </body>
 </html>
