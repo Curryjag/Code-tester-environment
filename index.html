@@ -5,123 +5,84 @@
   <title>$TRUMP Wallet Dashboard</title>
   <style>
     body {
-      background: #0d1117;
-      color: #c9d1d9;
-      font-family: 'Segoe UI', sans-serif;
+      background: #0e0e0e;
+      color: #fff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       display: flex;
-      flex-direction: column;
-      align-items: center;
       justify-content: center;
+      align-items: center;
       height: 100vh;
       margin: 0;
     }
 
-    .wallet-box {
-      background: #161b22;
-      padding: 2rem;
-      border-radius: 20px;
-      box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
-      width: 320px;
+    .dashboard {
+      background: #1c1c1c;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 0 20px rgba(0, 255, 255, 0.15);
       text-align: center;
-      border: 1px solid #30363d;
-      position: relative;
+      max-width: 400px;
     }
 
     .balance {
-      font-size: 1.6rem;
-      font-weight: bold;
-      margin: 1rem 0;
+      font-size: 28px;
+      margin: 20px 0;
+      color: #00ffb3;
     }
 
-    .trump {
-      font-size: 2.5rem;
-      color: #f7c52f;
-    }
-
-    .connected {
-      font-size: 1rem;
-      color: #26a641;
-      margin-top: 0.5rem;
-      display: none;
-    }
-
-    .deducted {
-      color: #f85149;
-      font-size: 1.2rem;
-      margin-top: 1rem;
-      animation: fadeInOut 3s forwards;
-    }
-
-    .refill-button {
-      margin-top: 1.5rem;
-      padding: 0.5rem 1rem;
-      background: #238636;
-      border: none;
-      color: white;
-      font-size: 1rem;
-      border-radius: 8px;
-      cursor: pointer;
-      display: none;
-    }
-
-    @keyframes fadeInOut {
-      0% { opacity: 0; }
-      20% { opacity: 1; }
-      80% { opacity: 1; }
-      100% { opacity: 0; }
+    .status {
+      font-size: 16px;
+      color: #ccc;
+      margin-top: 10px;
     }
   </style>
 </head>
 <body>
-
-  <div class="wallet-box">
-    <h2>Wallet Balance</h2>
-    <div class="balance"><span id="balance">5,000,000</span> $TRUMP</div>
-    <div class="connected" id="walletConnected">✅ Wallet Connected</div>
-    <div id="deductionNotice"></div>
-    <button class="refill-button" id="refillButton" onclick="refillBalance()">Refill Wallet</button>
+  <div class="dashboard">
+    <h2>$TRUMP Wallet</h2>
+    <div class="balance" id="wallet-balance">5,000,000 $TRUMP</div>
+    <div class="status" id="wallet-status">Wallet Connected</div>
   </div>
 
   <script>
-    const balanceEl = document.getElementById("balance");
-    const connectedEl = document.getElementById("walletConnected");
-    const deductionNotice = document.getElementById("deductionNotice");
-    const refillBtn = document.getElementById("refillButton");
+    const balanceDisplay = document.getElementById('wallet-balance');
+    const statusDisplay = document.getElementById('wallet-status');
 
-    let currentBalance = 5000000;
+    let balance = 5000000;
+    const deductionAmount = 500;
 
-    function formatNumber(num) {
-      return num.toLocaleString("en-US");
+    function updateBalanceDisplay() {
+      balanceDisplay.textContent = balance.toLocaleString() + ' $TRUMP';
     }
 
-    function deduct() {
-      if (currentBalance >= 500) {
-        connectedEl.style.display = "block";
-        deductionNotice.innerHTML = `<div class="deducted">−500 $TRUMP credited</div>`;
-        currentBalance -= 500;
-        balanceEl.textContent = formatNumber(currentBalance);
+    function getRandomDelay() {
+      return Math.floor(Math.random() * (30000 - 4000 + 1)) + 4000; // 4s to 30s
+    }
+
+    function simulateDeduction() {
+      if (balance <= 0) {
+        statusDisplay.textContent = "Balance depleted. Re-crediting account...";
+        setTimeout(() => {
+          balance = 5000000;
+          updateBalanceDisplay();
+          statusDisplay.textContent = "Wallet Connected";
+          scheduleNext();
+        }, 4000 + Math.random() * 3000); // Wait 4–7s before refill
       } else {
-        connectedEl.style.display = "none";
-        deductionNotice.innerHTML = `<div class="deducted">💡 Balance empty. Please refill.</div>`;
-        refillBtn.style.display = "inline-block";
-        clearInterval(deductInterval);
+        balance -= deductionAmount;
+        updateBalanceDisplay();
+        statusDisplay.textContent = "Wallet Connected - Crediting $500";
+        scheduleNext();
       }
     }
 
-    function refillBalance() {
-      currentBalance = 5000000;
-      balanceEl.textContent = formatNumber(currentBalance);
-      deductionNotice.innerHTML = "";
-      connectedEl.style.display = "none";
-      refillBtn.style.display = "none";
-      deductInterval = setInterval(deduct, 4000);
+    function scheduleNext() {
+      const delay = getRandomDelay();
+      setTimeout(simulateDeduction, delay);
     }
 
-    let deductInterval = setInterval(deduct, 4000);
-
-    // Initial delay to simulate connection
-    setTimeout(() => deduct(), 3000);
+    updateBalanceDisplay();
+    scheduleNext();
   </script>
-
 </body>
 </html>
