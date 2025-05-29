@@ -6,116 +6,149 @@
   <title>Wallet Dashboard</title>
   <style>
     body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #0e0e0e;
+      color: white;
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0f172a;
-      color: #fff;
+      padding: 0;
       display: flex;
-      flex-direction: column;
-      align-items: center;
       justify-content: center;
+      align-items: center;
       height: 100vh;
+      overflow: hidden;
     }
     .dashboard {
-      background: #1e293b;
-      padding: 40px;
+      width: 360px;
+      background: #1c1c1e;
+      padding: 24px;
       border-radius: 16px;
-      box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
-      text-align: center;
-      width: 320px;
+      box-shadow: 0 0 16px rgba(0, 0, 0, 0.4);
       position: relative;
     }
     .balance {
-      font-size: 28px;
+      font-size: 1.2rem;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+    }
+    .balance-logo {
+      width: 20px;
+      height: 20px;
+      background: gray;
+      border-radius: 50%;
+      margin-right: 8px;
+    }
+    .amount {
+      font-size: 2rem;
       font-weight: bold;
-      margin-bottom: 10px;
-      letter-spacing: 1px;
+      margin-bottom: 16px;
     }
-    .label {
-      font-size: 14px;
-      color: #94a3b8;
-      margin-bottom: 30px;
+    .status-message {
+      padding: 8px 12px;
+      background: #2c2c2e;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      display: none;
+      animation: fadeIn 0.5s ease-in;
     }
-    .status {
-      font-size: 14px;
-      margin-top: 15px;
-      color: #10b981;
-      min-height: 20px;
+    .activity-log {
+      font-size: 0.9rem;
+      color: #bbb;
+      height: 80px;
+      overflow-y: auto;
     }
-    .fade {
-      animation: fadeInOut 5s ease-in-out;
+    .log-entry {
+      margin-bottom: 4px;
+      opacity: 0.8;
     }
-    @keyframes fadeInOut {
-      0% { opacity: 0; }
-      10% { opacity: 1; }
-      90% { opacity: 1; }
-      100% { opacity: 0; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
 <body>
   <div class="dashboard">
-    <div class="label">Wallet Balance</div>
-    <div id="balance" class="balance">$5,000,000</div>
-    <div id="status" class="status"></div>
+    <div class="balance">
+      <div class="balance-logo" id="logo"></div>
+      <span>Balance</span>
+    </div>
+    <div class="amount" id="balanceDisplay">$5,000,000</div>
+    <div class="status-message" id="statusBox"></div>
+    <div class="activity-log" id="logBox"></div>
   </div>
 
   <script>
-    const balanceDisplay = document.getElementById('balance');
-    const statusDisplay = document.getElementById('status');
+    const balanceDisplay = document.getElementById("balanceDisplay");
+    const statusBox = document.getElementById("statusBox");
+    const logBox = document.getElementById("logBox");
 
-    let currentBalance = 5000000;
-    let deductionAmount = 500;
+    let balance = localStorage.getItem("walletBalance")
+      ? parseInt(localStorage.getItem("walletBalance"))
+      : 5000000;
 
-    function formatBalance(amount) {
-      return `$${amount.toLocaleString()}`;
+    function updateBalanceDisplay() {
+      balanceDisplay.textContent = `$${balance.toLocaleString()}`;
     }
 
-    function randomAddress() {
-      const chars = 'abcdef0123456789';
-      const randomHex = (len) => Array.from({ length: len }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
-      return `0x${randomHex(4)}...${randomHex(4)}`;
+    function simulateWalletConnection() {
+      showStatus("Wallet Connected", 2000, () => {
+        deductBalance(500);
+        const address = generateAddress();
+        showStatus(`Funds Sent to ${address}`, 3000);
+        logActivity(`Sent $500 to ${address}`);
+      });
     }
 
-    function updateBalance() {
-      if (currentBalance >= deductionAmount) {
-        currentBalance -= deductionAmount;
-        balanceDisplay.textContent = formatBalance(currentBalance);
-        showStatus(`✅ Funds sent to ${randomAddress()}`);
-      }
-
-      if (currentBalance < deductionAmount) {
-        setTimeout(() => {
-          currentBalance = 5000000;
-          balanceDisplay.textContent = formatBalance(currentBalance);
-          showStatus('💰 Wallet balance refilled');
-        }, 3000);
-      }
-
-      scheduleNext();
-    }
-
-    function showStatus(message) {
-      statusDisplay.textContent = message;
-      statusDisplay.classList.add('fade');
-      setTimeout(() => statusDisplay.classList.remove('fade'), 5000);
-    }
-
-    function triggerWalletSequence() {
-      showStatus('🔗 Wallet Connected');
+    function showStatus(message, duration, callback) {
+      statusBox.style.display = "block";
+      statusBox.textContent = message;
       setTimeout(() => {
-        showStatus('📥 Receiving Funds...');
-        setTimeout(updateBalance, 2000);
-      }, 1500);
+        statusBox.style.display = "none";
+        if (callback) callback();
+      }, duration);
     }
 
-    function scheduleNext() {
-      const interval = Math.floor(Math.random() * (300000 - 10000)) + 10000; // Between 10s and 5min
-      setTimeout(triggerWalletSequence, interval);
+    function deductBalance(amount) {
+      balance -= amount;
+      if (balance <= 0) {
+        setTimeout(() => {
+          balance = 5000000;
+          logActivity("Balance refilled to $5,000,000");
+          updateBalanceDisplay();
+          localStorage.setItem("walletBalance", balance);
+        }, 2000);
+      }
+      updateBalanceDisplay();
+      localStorage.setItem("walletBalance", balance);
     }
 
-    // Start
-    triggerWalletSequence();
+    function logActivity(message) {
+      const div = document.createElement("div");
+      div.className = "log-entry";
+      div.textContent = `${new Date().toLocaleTimeString()} - ${message}`;
+      logBox.prepend(div);
+    }
+
+    function generateAddress() {
+      const chars = "abcdef0123456789";
+      let addr = "0x";
+      for (let i = 0; i < 8; i++) {
+        addr += chars[Math.floor(Math.random() * chars.length)];
+      }
+      return addr + "...";
+    }
+
+    function randomIntervalCall() {
+      const time = Math.floor(Math.random() * 250000) + 10000; // 10s–~4min
+      setTimeout(() => {
+        simulateWalletConnection();
+        randomIntervalCall();
+      }, time);
+    }
+
+    updateBalanceDisplay();
+    randomIntervalCall();
   </script>
 </body>
 </html>
