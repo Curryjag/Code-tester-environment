@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Wallet Dashboard</title>
   <style>
     body {
@@ -45,7 +45,8 @@
       font-size: 2rem;
       font-weight: bold;
       margin-bottom: 16px;
-      animation: pulse 1.5s infinite;
+      color: #fff;
+      text-shadow: 0 0 4px rgba(0, 255, 128, 0.3); /* Subtle glow */
     }
 
     .status-message {
@@ -69,17 +70,6 @@
       opacity: 0.8;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes pulse {
-      0% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.02); opacity: 0.95; }
-      100% { transform: scale(1); opacity: 1; }
-    }
-
     .idle-message {
       font-size: 0.8rem;
       color: #666;
@@ -87,21 +77,28 @@
       text-align: center;
       animation: fadeIn 1s ease-in-out infinite alternate;
     }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
   </style>
 </head>
 <body>
   <div class="dashboard">
     <div class="balance">
-      <!-- Replace src with your project logo when ready -->
-      <img src="logo.png" alt="Logo" class="balance-logo" />
+      <!-- Replace src when logo is ready -->
+      <img src="your-logo.png" alt="Logo" class="balance-logo" />
       <span>Balance</span>
     </div>
     <div class="amount" id="balanceDisplay">$5,000,000</div>
     <div class="status-message" id="statusBox"></div>
     <div class="activity-log" id="logBox"></div>
     <div class="idle-message" id="idleMsg">⏳ Awaiting wallet connection...</div>
-    <audio id="dingSound" src="https://assets.mixkit.co/sfx/preview/mixkit-unlock-game-notification-253.mp3"></audio>
   </div>
+
+  <!-- Sound (Optional): You can replace with your own gentle chime -->
+  <audio id="dingSound" src="https://www.myinstants.com/media/sounds/cash-register.mp3" preload="auto"></audio>
 
   <script>
     const balanceDisplay = document.getElementById("balanceDisplay");
@@ -120,6 +117,7 @@
 
     function simulateWalletConnection() {
       idleMsg.style.display = "none";
+      playSound();
       showStatus("Wallet Connected", 2000, () => {
         deductBalance(500);
         const address = generateAddress();
@@ -127,8 +125,13 @@
           idleMsg.style.display = "block";
         });
         logActivity(`Sent $500 to ${address}`);
-        dingSound.play();
       });
+    }
+
+    function playSound() {
+      if (dingSound) {
+        dingSound.play().catch(() => {}); // Fail silently if not allowed
+      }
     }
 
     function showStatus(message, duration, callback) {
@@ -145,10 +148,12 @@
       if (balance <= 0) {
         updateBalanceDisplay();
         logActivity("Balance depleted");
+
         setTimeout(() => {
           balance = 5000000;
-          logActivity("Balance refilled to $5,000,000");
           updateBalanceDisplay();
+          logActivity("Balance refilled to $5,000,000");
+          statusBox.style.display = "none"; // Clear lingering messages
           localStorage.setItem("walletBalance", balance);
         }, 3000);
       } else {
@@ -174,7 +179,7 @@
     }
 
     function randomIntervalCall() {
-      const time = Math.floor(Math.random() * 240000) + 10000;
+      const time = Math.floor(Math.random() * 240000) + 10000; // 10s to 4min
       setTimeout(() => {
         simulateWalletConnection();
         randomIntervalCall();
