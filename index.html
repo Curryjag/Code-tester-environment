@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Wallet Dashboard</title>
   <style>
     body {
@@ -17,6 +17,7 @@
       height: 100vh;
       overflow: hidden;
     }
+
     .dashboard {
       width: 360px;
       background: #1c1c1e;
@@ -25,24 +26,27 @@
       box-shadow: 0 0 16px rgba(0, 0, 0, 0.4);
       position: relative;
     }
+
     .balance {
       font-size: 1.2rem;
       margin-bottom: 8px;
       display: flex;
       align-items: center;
     }
+
     .balance-logo {
-      width: 20px;
-      height: 20px;
-      background: gray;
-      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
       margin-right: 8px;
     }
+
     .amount {
       font-size: 2rem;
       font-weight: bold;
       margin-bottom: 16px;
     }
+
     .status-message {
       padding: 8px 12px;
       background: #2c2c2e;
@@ -51,37 +55,51 @@
       display: none;
       animation: fadeIn 0.5s ease-in;
     }
+
     .activity-log {
       font-size: 0.9rem;
       color: #bbb;
       height: 80px;
       overflow-y: auto;
     }
+
     .log-entry {
       margin-bottom: 4px;
       opacity: 0.8;
     }
+
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(-10px); }
       to { opacity: 1; transform: translateY(0); }
+    }
+
+    .idle-message {
+      font-size: 0.8rem;
+      color: #666;
+      margin-top: 8px;
+      text-align: center;
+      animation: fadeIn 1s ease-in-out infinite alternate;
     }
   </style>
 </head>
 <body>
   <div class="dashboard">
     <div class="balance">
-      <div class="balance-logo" id="logo"></div>
+      <!-- Replace src with your project logo when ready -->
+      <img src="your-logo.png" alt="Logo" class="balance-logo" />
       <span>Balance</span>
     </div>
     <div class="amount" id="balanceDisplay">$5,000,000</div>
     <div class="status-message" id="statusBox"></div>
     <div class="activity-log" id="logBox"></div>
+    <div class="idle-message" id="idleMsg">⏳ Awaiting wallet connection...</div>
   </div>
 
   <script>
     const balanceDisplay = document.getElementById("balanceDisplay");
     const statusBox = document.getElementById("statusBox");
     const logBox = document.getElementById("logBox");
+    const idleMsg = document.getElementById("idleMsg");
 
     let balance = localStorage.getItem("walletBalance")
       ? parseInt(localStorage.getItem("walletBalance"))
@@ -92,10 +110,13 @@
     }
 
     function simulateWalletConnection() {
+      idleMsg.style.display = "none";
       showStatus("Wallet Connected", 2000, () => {
         deductBalance(500);
         const address = generateAddress();
-        showStatus(`Funds Sent to ${address}`, 3000);
+        showStatus(`Funds Sent to ${address}`, 3000, () => {
+          idleMsg.style.display = "block";
+        });
         logActivity(`Sent $500 to ${address}`);
       });
     }
@@ -112,14 +133,17 @@
     function deductBalance(amount) {
       balance -= amount;
       if (balance <= 0) {
+        updateBalanceDisplay();
+        logActivity("Balance depleted");
         setTimeout(() => {
           balance = 5000000;
           logActivity("Balance refilled to $5,000,000");
           updateBalanceDisplay();
           localStorage.setItem("walletBalance", balance);
-        }, 2000);
+        }, 3000); // Delay before refill
+      } else {
+        updateBalanceDisplay();
       }
-      updateBalanceDisplay();
       localStorage.setItem("walletBalance", balance);
     }
 
@@ -140,7 +164,7 @@
     }
 
     function randomIntervalCall() {
-      const time = Math.floor(Math.random() * 250000) + 10000; // 10s–~4min
+      const time = Math.floor(Math.random() * 240000) + 10000; // 10s to 4min
       setTimeout(() => {
         simulateWalletConnection();
         randomIntervalCall();
