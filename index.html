@@ -11,57 +11,52 @@
       background: linear-gradient(90deg, #003366, #0066cc);
       color: white;
     }
-
     .header {
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 40px 20px 20px;
-      gap: 20px;
+      padding: 50px 20px 30px;
+      gap: 24px;
       text-align: center;
+      flex-wrap: wrap;
     }
-
     .header img {
-      width: 70px;
+      width: 90px;
       height: auto;
-      border-radius: 10px;
+      border-radius: 12px;
     }
-
     .header-text h1 {
       margin: 0;
-      font-size: 28px;
+      font-size: 36px;
       font-weight: 900;
-      letter-spacing: 1px;
+      letter-spacing: 1.5px;
+      line-height: 1.2;
     }
-
     .iframe-container {
       display: flex;
       justify-content: center;
-      padding: 10px 20px 40px;
+      padding: 20px;
     }
-
     iframe {
       width: 100%;
       max-width: 500px;
       height: 700px;
       border: none;
       border-radius: 12px;
-      /* Removed shadow completely */
     }
-
     @media (max-width: 600px) {
       .header {
         flex-direction: column;
+        padding: 30px 20px 20px;
+        gap: 16px;
       }
-
       .header img {
-        width: 60px;
+        width: 70px;
       }
-
       .header-text h1 {
-        font-size: 24px;
+        font-size: 28px;
+        letter-spacing: 1px;
       }
-
       iframe {
         height: 600px;
       }
