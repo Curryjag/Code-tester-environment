@@ -5,8 +5,8 @@
   <title>$TRUMP Wallet Dashboard</title>
   <style>
     body {
-      background: #0e0e0e;
-      color: #fff;
+      background: #0d1117;
+      color: #f0f6fc;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       display: flex;
       justify-content: center;
@@ -16,24 +16,41 @@
     }
 
     .dashboard {
-      background: #1c1c1c;
+      background: #161b22;
       padding: 30px;
       border-radius: 16px;
-      box-shadow: 0 0 20px rgba(0, 255, 255, 0.15);
+      box-shadow: 0 0 20px rgba(0, 255, 255, 0.12);
       text-align: center;
-      max-width: 400px;
+      max-width: 420px;
+      width: 100%;
     }
 
     .balance {
       font-size: 28px;
       margin: 20px 0;
-      color: #00ffb3;
+      color: #3fb950;
     }
 
     .status {
-      font-size: 16px;
-      color: #ccc;
+      font-size: 15px;
+      color: #c9d1d9;
       margin-top: 10px;
+      min-height: 1.5em;
+    }
+
+    .wallet-info {
+      font-size: 14px;
+      color: #8b949e;
+      margin-top: 5px;
+    }
+
+    .highlight {
+      color: #58a6ff;
+      font-weight: 500;
+    }
+
+    .success {
+      color: #3fb950;
     }
   </style>
 </head>
@@ -41,12 +58,14 @@
   <div class="dashboard">
     <h2>$TRUMP Wallet</h2>
     <div class="balance" id="wallet-balance">5,000,000 $TRUMP</div>
-    <div class="status" id="wallet-status">Wallet Connected</div>
+    <div class="status" id="wallet-status"></div>
+    <div class="wallet-info" id="wallet-address"></div>
   </div>
 
   <script>
     const balanceDisplay = document.getElementById('wallet-balance');
     const statusDisplay = document.getElementById('wallet-status');
+    const addressDisplay = document.getElementById('wallet-address');
 
     let balance = 5000000;
     const deductionAmount = 500;
@@ -56,23 +75,39 @@
     }
 
     function getRandomDelay() {
-      return Math.floor(Math.random() * (30000 - 4000 + 1)) + 4000; // 4s to 30s
+      return Math.floor(Math.random() * (30000 - 4000 + 1)) + 4000;
+    }
+
+    function generateWalletAddress() {
+      const chars = 'abcdef0123456789';
+      let address = '0x';
+      for (let i = 0; i < 40; i++) {
+        address += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      return address;
     }
 
     function simulateDeduction() {
       if (balance <= 0) {
-        statusDisplay.textContent = "Balance depleted. Re-crediting account...";
+        statusDisplay.innerHTML = `<span class="highlight">Balance depleted. Re-crediting account...</span>`;
+        addressDisplay.textContent = '';
         setTimeout(() => {
           balance = 5000000;
           updateBalanceDisplay();
-          statusDisplay.textContent = "Wallet Connected";
+          statusDisplay.textContent = '';
           scheduleNext();
-        }, 4000 + Math.random() * 3000); // Wait 4–7s before refill
+        }, 5000);
       } else {
-        balance -= deductionAmount;
-        updateBalanceDisplay();
-        statusDisplay.textContent = "Wallet Connected - Crediting $500";
-        scheduleNext();
+        const wallet = generateWalletAddress();
+        addressDisplay.textContent = `Crediting ${wallet.slice(0, 6)}...${wallet.slice(-4)}`;
+        statusDisplay.innerHTML = `Crediting <span class="highlight">$500 $TRUMP</span> to wallet...`;
+        
+        setTimeout(() => {
+          balance -= deductionAmount;
+          updateBalanceDisplay();
+          statusDisplay.innerHTML = `<span class="success">✅ Credited ${wallet.slice(0, 6)}...${wallet.slice(-4)}</span>`;
+          scheduleNext();
+        }, 2500); // simulate short delay for "processing"
       }
     }
 
