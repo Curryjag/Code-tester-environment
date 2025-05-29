@@ -5,10 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Wallet Dashboard</title>
   <style>
+    :root {
+      --bg: #0e0e0e;
+      --card: #1c1c1e;
+      --text: white;
+    }
+
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #0e0e0e;
-      color: white;
+      background-color: var(--bg);
+      color: var(--text);
       margin: 0;
       padding: 0;
       display: flex;
@@ -20,7 +26,7 @@
 
     .dashboard {
       width: 360px;
-      background: #1c1c1e;
+      background: var(--card);
       padding: 24px;
       border-radius: 16px;
       box-shadow: 0 0 16px rgba(0, 0, 0, 0.4);
@@ -45,6 +51,12 @@
       font-size: 2rem;
       font-weight: bold;
       margin-bottom: 16px;
+      transition: color 0.3s ease;
+    }
+
+    .amount:hover {
+      color: #00ffae;
+      cursor: default;
     }
 
     .status-message {
@@ -66,11 +78,13 @@
     .log-entry {
       margin-bottom: 4px;
       opacity: 0.8;
+      transition: background 0.3s;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-10px); }
-      to { opacity: 1; transform: translateY(0); }
+    .log-entry:hover {
+      background: rgba(255,255,255,0.05);
+      padding: 2px 6px;
+      border-radius: 4px;
     }
 
     .idle-message {
@@ -80,12 +94,19 @@
       text-align: center;
       animation: fadeIn 1s ease-in-out infinite alternate;
     }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
   </style>
 </head>
 <body>
   <div class="dashboard">
+    <label style="display:block; text-align:right; margin-bottom: 8px;">
+      <input type="checkbox" id="themeToggle"> Dark Mode
+    </label>
     <div class="balance">
-      <!-- Replace src with your project logo when ready -->
       <img src="your-logo.png" alt="Logo" class="balance-logo" />
       <span>Balance</span>
     </div>
@@ -95,11 +116,19 @@
     <div class="idle-message" id="idleMsg">⏳ Awaiting wallet connection...</div>
   </div>
 
+  <audio id="connectSound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_7f08a39764.mp3" preload="auto"></audio>
+  <audio id="sendSound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_842c9bb3b8.mp3" preload="auto"></audio>
+  <audio id="refillSound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_d9e91e4b52.mp3" preload="auto"></audio>
+
   <script>
     const balanceDisplay = document.getElementById("balanceDisplay");
     const statusBox = document.getElementById("statusBox");
     const logBox = document.getElementById("logBox");
     const idleMsg = document.getElementById("idleMsg");
+    const connectSound = document.getElementById("connectSound");
+    const sendSound = document.getElementById("sendSound");
+    const refillSound = document.getElementById("refillSound");
+    const themeToggle = document.getElementById("themeToggle");
 
     let balance = localStorage.getItem("walletBalance")
       ? parseInt(localStorage.getItem("walletBalance"))
@@ -111,13 +140,14 @@
 
     function simulateWalletConnection() {
       idleMsg.style.display = "none";
+      connectSound.play();
       showStatus("Wallet Connected", 2000, () => {
         deductBalance(500);
         const address = generateAddress();
-        showStatus(`Funds Sent to ${address}`, 3000, () => {
-          idleMsg.style.display = "block";
-        });
+        sendSound.play();
+        showStatus(`Funds Sent to ${address}`, 3000);
         logActivity(`Sent $500 to ${address}`);
+        lastAddress = address;
       });
     }
 
@@ -125,10 +155,13 @@
       statusBox.style.display = "block";
       statusBox.textContent = message;
       setTimeout(() => {
+        if (message.startsWith("Funds Sent") && balance > 0) return;
         statusBox.style.display = "none";
         if (callback) callback();
       }, duration);
     }
+
+    let lastAddress = null;
 
     function deductBalance(amount) {
       balance -= amount;
@@ -137,10 +170,14 @@
         logActivity("Balance depleted");
         setTimeout(() => {
           balance = 5000000;
+          refillSound.play();
           logActivity("Balance refilled to $5,000,000");
           updateBalanceDisplay();
           localStorage.setItem("walletBalance", balance);
-        }, 3000); // Delay before refill
+          statusBox.style.display = "none";
+          lastAddress = null;
+          idleMsg.style.display = "block";
+        }, 3000);
       } else {
         updateBalanceDisplay();
       }
@@ -170,6 +207,18 @@
         randomIntervalCall();
       }, time);
     }
+
+    themeToggle.addEventListener("change", () => {
+      if (themeToggle.checked) {
+        document.documentElement.style.setProperty("--bg", "#0e0e0e");
+        document.documentElement.style.setProperty("--card", "#1c1c1e");
+        document.documentElement.style.setProperty("--text", "white");
+      } else {
+        document.documentElement.style.setProperty("--bg", "#f4f4f4");
+        document.documentElement.style.setProperty("--card", "#ffffff");
+        document.documentElement.style.setProperty("--text", "#000000");
+      }
+    });
 
     updateBalanceDisplay();
     randomIntervalCall();
