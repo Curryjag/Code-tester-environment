@@ -47,6 +47,7 @@
       margin-bottom: 16px;
       color: #fff;
       text-shadow: 0 0 4px rgba(0, 255, 128, 0.3); /* Subtle glow */
+      transition: color 0.5s ease;
     }
 
     .status-message {
@@ -67,7 +68,8 @@
 
     .log-entry {
       margin-bottom: 4px;
-      opacity: 0.8;
+      opacity: 0;
+      animation: fadeIn 0.8s forwards;
     }
 
     .idle-message {
@@ -87,7 +89,6 @@
 <body>
   <div class="dashboard">
     <div class="balance">
-      <!-- Replace src when logo is ready -->
       <img src="https://media.zenfs.com/en/aol_ny_post_us_news_articles_123/cd57f4122a7033346c851d4791a4aff0" alt="Logo" class="balance-logo" />
       <span>Balance</span>
     </div>
@@ -97,7 +98,6 @@
     <div class="idle-message" id="idleMsg">⏳ Awaiting wallet connection...</div>
   </div>
 
-  <!-- Sound (Optional): You can replace with your own gentle chime -->
   <audio id="dingSound" src="https://www.myinstants.com/media/sounds/cash-register.mp3" preload="auto"></audio>
 
   <script>
@@ -111,8 +111,27 @@
       ? parseInt(localStorage.getItem("walletBalance"))
       : 5000000;
 
-    function updateBalanceDisplay() {
-      balanceDisplay.textContent = `$${balance.toLocaleString()}`;
+    updateBalanceDisplay(balance);
+
+    function updateBalanceDisplay(value) {
+      balanceDisplay.textContent = `$${value.toLocaleString()}`;
+    }
+
+    // Smoothly animate balance counting down
+    function animateBalanceChange(from, to, duration = 1000) {
+      const start = performance.now();
+
+      function step(timestamp) {
+        const progress = Math.min((timestamp - start) / duration, 1);
+        const currentVal = Math.floor(from + (to - from) * progress);
+        updateBalanceDisplay(currentVal);
+        if (progress < 1) {
+          requestAnimationFrame(step);
+        } else {
+          updateBalanceDisplay(to);
+        }
+      }
+      requestAnimationFrame(step);
     }
 
     function simulateWalletConnection() {
@@ -144,22 +163,24 @@
     }
 
     function deductBalance(amount) {
-      balance -= amount;
-      if (balance <= 0) {
-        updateBalanceDisplay();
+      if (balance - amount <= 0) {
+        // Animate balance counting down to zero
+        animateBalanceChange(balance, 0, 1000);
         logActivity("Balance depleted");
-
         setTimeout(() => {
           balance = 5000000;
-          updateBalanceDisplay();
+          updateBalanceDisplay(balance);
           logActivity("Balance refilled to $5,000,000");
-          statusBox.style.display = "none"; // Clear lingering messages
+          clearLog();  // Clear log only on refill
+          statusBox.style.display = "none";
           localStorage.setItem("walletBalance", balance);
         }, 3000);
       } else {
-        updateBalanceDisplay();
+        let oldBalance = balance;
+        balance -= amount;
+        animateBalanceChange(oldBalance, balance, 1000);
+        localStorage.setItem("walletBalance", balance);
       }
-      localStorage.setItem("walletBalance", balance);
     }
 
     function logActivity(message) {
@@ -167,6 +188,10 @@
       div.className = "log-entry";
       div.textContent = `${new Date().toLocaleTimeString()} - ${message}`;
       logBox.prepend(div);
+    }
+
+    function clearLog() {
+      logBox.innerHTML = '';
     }
 
     function generateAddress() {
@@ -186,7 +211,6 @@
       }, time);
     }
 
-    updateBalanceDisplay();
     randomIntervalCall();
   </script>
 </body>
