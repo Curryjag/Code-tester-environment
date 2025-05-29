@@ -1,61 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Wallet Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #e2e8f0; }
-    .balance-card { background-color: #1e293b; border-radius: 1rem; padding: 2rem; }
-    .token-logo { width: 36px; height: 36px; margin-right: 0.5rem; }
-    .fade-in { animation: fadeIn 0.7s ease-in-out; }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
+    .balance-change {
+      transition: all 0.3s ease-in-out;
     }
   </style>
 </head>
-<body class="p-6">
-  <div class="max-w-md mx-auto">
-    <div class="balance-card shadow-lg">
-      <div class="flex items-center mb-4">
-        <img src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png" alt="$TRUMP Logo" class="token-logo">
-        <h2 class="text-xl font-semibold">$TRUMP Balance</h2>
-      </div>
-      <div class="text-3xl font-bold mb-2" id="balance-display">$5,000,000</div>
-      <p class="text-sm text-gray-400 mb-4">Wallet connected • Receiving funds</p>
-      <button onclick="simulateSpend()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-300">Simulate Wallet Activity</button>
+<body class="bg-gray-100 font-sans flex items-center justify-center min-h-screen">
+  <div class="bg-white shadow-xl rounded-2xl p-8 max-w-md w-full text-center">
+    <h1 class="text-2xl font-bold mb-4">$TRUMP Wallet Balance</h1>
+    <div id="balance-display" class="text-4xl font-mono text-green-600 balance-change mb-6">
+      $5,000,000.00
     </div>
-    <div class="mt-6 text-sm text-gray-500 text-center">
-      <p>Wallet: 0xA1B2...C3D4</p>
-    </div>
+    <div id="status-message" class="text-sm text-gray-600 h-6"></div>
   </div>
 
   <script>
-    let balance = 5000000;
-    const balanceDisplay = document.getElementById("balance-display");
+    const balanceDisplay = document.getElementById('balance-display');
+    const statusMessage = document.getElementById('status-message');
+
+    let currentBalance = 5000000.00;
+    let deducting = false;
 
     function formatBalance(amount) {
-      return `$${amount.toLocaleString()}`;
+      return `$${amount.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
     }
 
-    function simulateSpend() {
+    function deductBalance() {
+      if (deducting || currentBalance <= 0) return;
+      deducting = true;
       const interval = setInterval(() => {
-        const deduction = Math.floor(Math.random() * 400 + 100); // Random deduction between 100–500
-        balance = Math.max(0, balance - deduction);
-        balanceDisplay.textContent = formatBalance(balance);
-
-        if (balance === 0) {
+        if (currentBalance <= 0) {
           clearInterval(interval);
           setTimeout(() => {
-            balance = 5000000;
-            balanceDisplay.textContent = formatBalance(balance);
-          }, 5000); // Refill after 5s
+            currentBalance = 5000000.00;
+            balanceDisplay.textContent = formatBalance(currentBalance);
+            deducting = false;
+          }, 3000);
+        } else {
+          currentBalance -= 500;
+          if (currentBalance < 0) currentBalance = 0;
+          balanceDisplay.textContent = formatBalance(currentBalance);
         }
-      }, Math.floor(Math.random() * 30000) + 4000); // 4–30 seconds
+      }, Math.floor(Math.random() * (30000 - 4000 + 1)) + 4000); // 4s to 30s
     }
+
+    function randomAddress() {
+      const chars = 'abcdef0123456789';
+      let addr = '0x';
+      for (let i = 0; i < 40; i++) {
+        addr += chars[Math.floor(Math.random() * chars.length)];
+      }
+      return addr;
+    }
+
+    function showStatusSequence() {
+      const sequence = [
+        `Wallet connected`,
+        `Receiving funds...`,
+        `Funds sent to ${randomAddress()}`
+      ];
+
+      let index = 0;
+      const interval = setInterval(() => {
+        if (index >= sequence.length) {
+          clearInterval(interval);
+          setTimeout(() => statusMessage.textContent = '', 3000);
+        } else {
+          statusMessage.textContent = sequence[index];
+          index++;
+        }
+      }, 2000);
+    }
+
+    function triggerStatusRandomly() {
+      setInterval(() => {
+        showStatusSequence();
+      }, Math.floor(Math.random() * (300000 - 10000 + 1)) + 10000); // 10s to 5m
+    }
+
+    deductBalance();
+    triggerStatusRandomly();
   </script>
 </body>
 </html>
