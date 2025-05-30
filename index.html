@@ -10,9 +10,6 @@
       font-family: 'Arial', sans-serif;
       background: linear-gradient(90deg, #003366, #0066cc);
       color: white;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
     }
     .header {
       display: flex;
@@ -32,18 +29,13 @@
       margin: 0;
       letter-spacing: 1px;
     }
-    .content {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-    }
     iframe {
       width: 100%;
-      height: 400px;
+      height: 350px;
       border: none;
       display: block;
       background: transparent;
+      margin-bottom: 0;
     }
   </style>
 </head>
@@ -54,9 +46,7 @@
     <h1>TRUMP MEME COIN GIVEAWAY</h1>
   </div>
 
-  <div class="content">
-    <iframe src="https://trump-balance-dashboard.netlify.app/" loading="lazy"></iframe>
-  </div>
+  <iframe src="https://trump-balance-dashboard.netlify.app/" loading="lazy"></iframe>
 
 </body>
 </html>
