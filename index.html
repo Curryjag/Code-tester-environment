@@ -11,6 +11,7 @@
       background: linear-gradient(90deg, #003366, #0066cc);
       color: white;
     }
+
     .header {
       display: flex;
       align-items: center;
@@ -18,17 +19,20 @@
       padding: 20px;
       white-space: nowrap;
     }
+
     .header img {
       width: 60px;
       height: auto;
       border-radius: 12px;
     }
+
     .header h1 {
       font-size: 4vw;
       font-weight: 900;
       margin: 0;
       letter-spacing: 1px;
     }
+
     iframe {
       width: 100%;
       height: 250px;
@@ -38,10 +42,22 @@
       margin-bottom: 0;
     }
 
-    /* Desktop centering tweak */
+    /* Desktop tweaks */
     @media (min-width: 768px) {
       .header {
         justify-content: center;
+      }
+
+      iframe {
+        height: 300px;
+      }
+
+      .header h1 {
+        font-size: 2.5rem;
+      }
+
+      .header img {
+        width: 80px;
       }
     }
   </style>
