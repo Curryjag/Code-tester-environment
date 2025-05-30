@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <!-- Trick mobile browsers into thinking viewport is 1200px -->
   <meta name="viewport" content="width=1200, initial-scale=1.0">
   <title>Trump Meme Coin Giveaway</title>
   <style>
@@ -11,41 +10,31 @@
       font-family: 'Arial', sans-serif;
       background: linear-gradient(90deg, #003366, #0066cc);
       color: white;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-width: 1200px; /* force desktop width */
     }
     .header {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      gap: 20px;
       padding: 20px 30px;
-      width: 1200px;
-      box-sizing: border-box;
+      white-space: nowrap;
     }
     .header img {
-      width: 80px;
+      width: 70px;
       height: auto;
       border-radius: 12px;
     }
-    .header-text h1 {
-      margin: 0;
+    .header h1 {
       font-size: 48px;
       font-weight: 900;
+      margin: 0;
       letter-spacing: 1.5px;
     }
     .wallet-header {
       background: #1c1c1e;
       padding: 16px 24px;
-      margin: 20px 0;
+      margin: 20px 30px;
       border-radius: 16px;
       box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      width: 1200px;
-      box-sizing: border-box;
     }
     iframe {
       width: 100%;
@@ -62,9 +51,7 @@
   <!-- Header Section -->
   <div class="header">
     <img src="https://media.zenfs.com/en/aol_ny_post_us_news_articles_123/cd57f4122a7033346c851d4791a4aff0" alt="Trump Meme Coin">
-    <div class="header-text">
-      <h1>TRUMP MEME COIN GIVEAWAY</h1>
-    </div>
+    <h1>TRUMP MEME COIN GIVEAWAY</h1>
   </div>
 
   <!-- Embedded Wallet Dashboard -->
