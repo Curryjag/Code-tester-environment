@@ -22,12 +22,14 @@
       width: 60px;
       height: auto;
       border-radius: 12px;
+      transition: all 0.3s ease;
     }
     .header h1 {
       font-size: 4vw;
       font-weight: 900;
       margin: 0;
       letter-spacing: 1px;
+      transition: all 0.3s ease;
     }
     iframe {
       width: 100%;
@@ -38,10 +40,26 @@
       margin-bottom: 0;
     }
 
-    /* Desktop centering tweak */
+    /* Desktop centering & scaling */
     @media (min-width: 768px) {
       .header {
         justify-content: center;
+      }
+      .header img {
+        width: 80px;
+      }
+      .header h1 {
+        font-size: 2.5vw;
+      }
+    }
+
+    /* Even larger for big screens */
+    @media (min-width: 1200px) {
+      .header img {
+        width: 100px;
+      }
+      .header h1 {
+        font-size: 2vw;
       }
     }
   </style>
