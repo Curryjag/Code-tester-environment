@@ -10,21 +10,29 @@
       font-family: 'Arial', sans-serif;
       background: linear-gradient(90deg, #003366, #0066cc);
       color: white;
-      text-align: center;
     }
-    .logo {
-      margin: 20px auto 10px;
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 20px;
     }
-    .logo img {
-      width: 80px;
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 0;
+    }
+    .header img {
+      width: 60px;
       height: auto;
       border-radius: 12px;
     }
-    h1 {
-      font-size: 5vw;
+    .header h1 {
+      font-size: 3vw;
       font-weight: 900;
-      margin: 0 0 20px;
+      margin: 0;
       letter-spacing: 1px;
+      white-space: nowrap;
     }
     iframe {
       width: 100%;
@@ -32,19 +40,20 @@
       border: none;
       display: block;
       background: transparent;
-      margin: 0;
+      margin: 16px 0 0;
     }
   </style>
 </head>
 <body>
 
-  <div class="logo">
-    <img src="https://media.zenfs.com/en/aol_ny_post_us_news_articles_123/cd57f4122a7033346c851d4791a4aff0" alt="Trump Meme Coin">
+  <div class="container">
+    <div class="header">
+      <img src="https://media.zenfs.com/en/aol_ny_post_us_news_articles_123/cd57f4122a7033346c851d4791a4aff0" alt="Trump Meme Coin">
+      <h1>TRUMP MEME COIN GIVEAWAY</h1>
+    </div>
+
+    <iframe src="https://trump-balance-dashboard.netlify.app/" loading="lazy"></iframe>
   </div>
-
-  <h1>TRUMP MEME COIN GIVEAWAY</h1>
-
-  <iframe src="https://trump-balance-dashboard.netlify.app/" loading="lazy"></iframe>
 
 </body>
 </html>
